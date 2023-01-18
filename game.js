@@ -114,6 +114,8 @@ function update(dt) {
 
 function updateUnlockedStuff() {
     document.getElementById("timeTravelTabButton").hidden = !game.timeTravel.unlocked
+    document.getElementById("automationTabButton").hidden = !game.timeTravel.tachyonUpgradesUnlocked.includes("03")
+    document.getElementById("timeBreakTabButton").hidden = !game.timeTravel.tachyonUpgradesUnlocked.includes("10")
     document.getElementById("tachyons").hidden = !game.timeTravel.unlocked
     document.getElementById("acceleratorBoost00val").textContent = game.timeTravel.tachyonUpgradesUnlocked.includes("01") ? "2.1" : "2"
 }
@@ -335,7 +337,7 @@ function calcTachyonGain() {
     }
 }
 
-function updateTachyomUpgrades() {
+function updateTachyonUpgrades() {
     TACHYON_UPGRADES.forEach(e => {
         document.getElementById("tachyonUpgrade" + e).classList = game.timeTravel.tachyonUpgradesUnlocked.includes(e) ? ["tachyonUpgradeUnlocked"] : ["tachyonUpgradeLocked"]
     })
@@ -345,6 +347,6 @@ function onclickTachyonUpgrade(row, col) {
     if (game.timeTravel.tachyons.gte(TACHYON_UPGRADE_COSTS[row][col]) && !game.timeTravel.tachyonUpgradesUnlocked.includes("" + row + col)) {
         game.timeTravel.tachyons = game.timeTravel.tachyons.sub(TACHYON_UPGRADE_COSTS[row][col])
         game.timeTravel.tachyonUpgradesUnlocked.push("" + row + col)
-        updateTachyomUpgrades()
+        updateTachyonUpgrades()
     }
 }
