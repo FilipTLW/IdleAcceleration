@@ -307,3 +307,32 @@ button {
     background-color: rgb(19, 230, 219);
     font-weight: bold;
 }
+
+.automator {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    color: white;
+    text-align: center;
+    border: 2px solid rgb(0, 236, 0);
+    background-color: rgb(0, 236, 0, 0.3);
+    border-radius: 20px;
+}
+
+.automatorToggleButton {
+    width: 200px;
+    height: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 20px;
+    transition: 0.2s;
+}
+
+.automatorToggleButton:hover {
+    background-color: black;
+    border: 2px solid white;
+    color: white;
+}

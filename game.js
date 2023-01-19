@@ -48,6 +48,10 @@ var game = {
         unlocked: false,
         tachyons: new Decimal(0),
         tachyonUpgradesUnlocked: [],
+        automation: {
+            autoAccel: false,
+            autoAccelBoost: false
+        },
         breakTimeUnlocked: false
     }
 }
@@ -70,7 +74,7 @@ const TACHYON_UPGRADES = ["00", "01", "02", "03", "10"]
 updateAccelerators()
 
 var lastUpdate = Date.now();
-var myInterval = setInterval(tick, 0);
+var tickInterval = setInterval(tick, 0);
 
 function tick() {
     var now = Date.now();
@@ -349,4 +353,56 @@ function onclickTachyonUpgrade(row, col) {
         game.timeTravel.tachyonUpgradesUnlocked.push("" + row + col)
         updateTachyonUpgrades()
     }
+}
+
+var autoAcceleratorInterval = window.setInterval(autoAcceleratorTick, 200)
+
+function autoAcceleratorTick() {
+    // credits: f_ypsilonnn
+    if (game.timeTravel.tachyonUpgradesUnlocked.includes("03") && game.timeTravel.automation.autoAccel) {
+        automateOneAccelerator(10)
+        automateOneAccelerator(9)
+        automateOneAccelerator(8)
+        automateOneAccelerator(7)
+        automateOneAccelerator(6)
+        automateOneAccelerator(5)
+        automateOneAccelerator(4)
+        automateOneAccelerator(3)
+        automateOneAccelerator(2)
+        automateOneAccelerator(1)
+    }
+}
+
+var autoAcceleratorBoostInterval = window.setInterval(autoAcceleratorBoostTick, 200)
+
+function autoAcceleratorBoostTick() {
+    if (game.timeTravel.tachyonUpgradesUnlocked.includes("03") && game.timeTravel.automation.autoAccel) {
+        onclickAcceleratorBoosts(0, 0)
+        onclickAcceleratorBoosts(0, 1)
+    }
+}
+
+function automateOneAccelerator(accel) {
+    const costFactor = new Decimal(game.timeTravel.tachyonUpgradesUnlocked.includes("00") ? 1.5 : 2)
+    var count = new Decimal(1)
+    var price = game.accelerators["accel" + accel].cost
+    if (price.gt(game.speed)) return;
+    while (price.add(price.mul(costFactor)).lte(game.speed)) {
+        count = count.add(1)
+        price = price.add(price.mul(costFactor))
+    }
+    game.accelerators["accel" + accel].amount = game.accelerators["accel" + accel].amount.add(count)
+    game.accelerators["accel" + accel].cost = game.accelerators["accel" + accel].cost.mul(costFactor.pow(count))
+    game.speed = game.speed.sub(price)
+    updateAccelerators()
+}
+
+function onclickAutomatorToggle(automator) {
+    game.timeTravel.automation[automator] = !game.timeTravel.automation[automator]
+    updateAutomationToggleLabels()
+}
+
+function updateAutomationToggleLabels() {
+    document.getElementById("autoAcceleratorToogle").innerHTML = "Enabled: " + (game.timeTravel.automation.autoAccel ? "Yes" : "No")
+    document.getElementById("autoAcceleratorBoostToogle").innerHTML = "Enabled: " + (game.timeTravel.automation.autoAccelBoost ? "Yes" : "No")
 }

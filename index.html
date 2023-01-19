@@ -3,7 +3,7 @@
         <link rel="stylesheet" href="style.css">
         <title>Idle Acceleration</title>
     </head>
-    <body style="background-color: rgb(63, 63, 63);" id="mainBody">
+    <body style="background-color: rgb(63, 63, 63); background-image: url('https://wallpaperaccess.com/full/250502.jpg'); background-attachment: fixed; background-size: 100% 100%;" id="mainBody">
         <div id="everything">
             <div id="mainProgress">
                 <div id="progressValue" style="width:25%;">25%</div>
@@ -212,6 +212,19 @@
                     </div>
                 </div>
                 <div id="automationSubTab" hidden>
+                    <br/>
+                    <div class="automationContainer">
+                        <div class="automator">
+                            <h1>Auto Accelerator</h1>
+                            <button class="automatorToggleButton" id="autoAcceleratorToogle" onclick="onclickAutomatorToggle('autoAccel')">Enabled: Yes</button>
+                            <h2>Autobuys max accelerators every 0.2s. Higher accelerator # = higher priority.</h2>
+                        </div>
+                        <div class="automator">
+                            <h1>Auto Accelerator Boost</h1>
+                            <button class="automatorToggleButton" id="autoAcceleratorBoostToogle" onclick="onclickAutomatorToggle('autoAccelBoost')">Enabled: Yes</button>
+                            <h2>Tries to buy the first 2 accelerator boosts every 0.2s.</h2>
+                        </div>
+                    </div>
                 </div>
                 <div id="breakTimeSubTab" hidden>
                     <h1 id="einsteinCompensatorTitle">Einstein Compensator</h1>
@@ -286,7 +299,7 @@
                 </div>
             </div>
         </div>
-        <div style="background-color: rgb(63, 63, 63);" id="timeTravelForcedScreen" hidden>
+        <div style="background-image: url('https://wallpaperaccess.com/full/250502.jpg'); background-attachment: fixed; background-size: 100% 100%;" id="timeTravelForcedScreen" hidden>
             <button id="timeTravelBigButton" onclick="timeTravel()">Time Travel</button>
         </div>
     </body>

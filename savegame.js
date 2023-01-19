@@ -102,6 +102,10 @@ const BASE_GAME = {
         unlocked: false,
         tachyons: new Decimal(0),
         tachyonUpgradesUnlocked: [],
+        automation: {
+            autoAccel: false,
+            autoAccelBoost: false
+        },
         breakTimeUnlocked: false
     }
 }
@@ -159,6 +163,7 @@ function import_save(obj) {
     finally {
         updateAccelerators()
         updateAcceleratorBoosts()
-        updateTachyomUpgrades()
+        updateTachyonUpgrades()
+        updateAutomationToggleLabels()
     }
 }
