@@ -4,11 +4,6 @@ function clone(obj) {
     // Handle the 3 simple types, and null or undefined
     if (null == obj || "object" != typeof obj) return obj;
 
-
-    if (obj instanceof Decimal) {
-        return new Decimal(obj);
-    }
-    
     // Handle Array
     if (obj instanceof Array) {
         copy = [];
@@ -115,83 +110,88 @@ const BASE_GAME = {
     settings: {
         autoSave: true
     }
+};
+
+function onclick_autosave() {
+    game.settings.autoSave = !game.settings.autoSave;
+    document.getElementById("autoSaveButton").innerHTML = "Auto Save: " + (game.settings.autoSave ? "ON" : "OFF");
 }
 
 function onclick_export() {
-    prompt("Copy this (Crtl+C)", export_save())
+    prompt("Copy this (Crtl+C)", export_save());
 }
 
 function export_save() {
-    return btoa(JSON.stringify(game))
+    return btoa(JSON.stringify(game));
 }
 
 function onclick_import() {
-    import_save(prompt("Save Code"))
+    import_save(prompt("Save Code"));
 }
 
 function onclick_save() {
-    save()
+    save();
 }
 
 function import_save(obj) {
     try {
         
-        let temp = clone(BASE_GAME)
+        let temp = clone(BASE_GAME);
 
-        mergeDeep(temp, JSON.parse(atob(obj)))
+        mergeDeep(temp, JSON.parse(atob(obj)));
         
-        temp.speed = new Decimal(temp.speed)
-        temp.acceleration = new Decimal(temp.acceleration)
-        temp.accelerators.accel1.amount = new Decimal(temp.accelerators.accel1.amount)
-        temp.accelerators.accel1.cost = new Decimal(temp.accelerators.accel1.cost)
-        temp.accelerators.accel2.amount = new Decimal(temp.accelerators.accel2.amount)
-        temp.accelerators.accel2.cost = new Decimal(temp.accelerators.accel2.cost)
-        temp.accelerators.accel3.amount = new Decimal(temp.accelerators.accel3.amount)
-        temp.accelerators.accel3.cost = new Decimal(temp.accelerators.accel3.cost)
-        temp.accelerators.accel4.amount = new Decimal(temp.accelerators.accel4.amount)
-        temp.accelerators.accel4.cost = new Decimal(temp.accelerators.accel4.cost)
-        temp.accelerators.accel5.amount = new Decimal(temp.accelerators.accel5.amount)
-        temp.accelerators.accel5.cost = new Decimal(temp.accelerators.accel5.cost)
-        temp.accelerators.accel6.amount = new Decimal(temp.accelerators.accel6.amount)
-        temp.accelerators.accel6.cost = new Decimal(temp.accelerators.accel6.cost)
-        temp.accelerators.accel7.amount = new Decimal(temp.accelerators.accel7.amount)
-        temp.accelerators.accel7.cost = new Decimal(temp.accelerators.accel7.cost)
-        temp.accelerators.accel8.amount = new Decimal(temp.accelerators.accel8.amount)
-        temp.accelerators.accel8.cost = new Decimal(temp.accelerators.accel8.cost)
-        temp.accelerators.accel9.amount = new Decimal(temp.accelerators.accel9.amount)
-        temp.accelerators.accel9.cost = new Decimal(temp.accelerators.accel9.cost)
-        temp.accelerators.accel10.amount = new Decimal(temp.accelerators.accel10.amount)
-        temp.accelerators.accel10.cost = new Decimal(temp.accelerators.accel10.cost)
-        temp.timeTravel.tachyons = new Decimal(temp.timeTravel.tachyons)
-        temp.timeTravel.breakTime.antiHiggsBosons = new Decimal(temp.timeTravel.breakTime.antiHiggsBosons)
+        temp.speed = new Decimal(temp.speed);
+        temp.acceleration = new Decimal(temp.acceleration);
+        temp.accelerators.accel1.amount = new Decimal(temp.accelerators.accel1.amount);
+        temp.accelerators.accel1.cost = new Decimal(temp.accelerators.accel1.cost);
+        temp.accelerators.accel2.amount = new Decimal(temp.accelerators.accel2.amount);
+        temp.accelerators.accel2.cost = new Decimal(temp.accelerators.accel2.cost);
+        temp.accelerators.accel3.amount = new Decimal(temp.accelerators.accel3.amount);
+        temp.accelerators.accel3.cost = new Decimal(temp.accelerators.accel3.cost);
+        temp.accelerators.accel4.amount = new Decimal(temp.accelerators.accel4.amount);
+        temp.accelerators.accel4.cost = new Decimal(temp.accelerators.accel4.cost);
+        temp.accelerators.accel5.amount = new Decimal(temp.accelerators.accel5.amount);
+        temp.accelerators.accel5.cost = new Decimal(temp.accelerators.accel5.cost);
+        temp.accelerators.accel6.amount = new Decimal(temp.accelerators.accel6.amount);
+        temp.accelerators.accel6.cost = new Decimal(temp.accelerators.accel6.cost);
+        temp.accelerators.accel7.amount = new Decimal(temp.accelerators.accel7.amount);
+        temp.accelerators.accel7.cost = new Decimal(temp.accelerators.accel7.cost);
+        temp.accelerators.accel8.amount = new Decimal(temp.accelerators.accel8.amount);
+        temp.accelerators.accel8.cost = new Decimal(temp.accelerators.accel8.cost);
+        temp.accelerators.accel9.amount = new Decimal(temp.accelerators.accel9.amount);
+        temp.accelerators.accel9.cost = new Decimal(temp.accelerators.accel9.cost);
+        temp.accelerators.accel10.amount = new Decimal(temp.accelerators.accel10.amount);
+        temp.accelerators.accel10.cost = new Decimal(temp.accelerators.accel10.cost);
+        temp.timeTravel.tachyons = new Decimal(temp.timeTravel.tachyons);
+        temp.timeTravel.breakTime.antiHiggsBosons = new Decimal(temp.timeTravel.breakTime.antiHiggsBosons);
 
-        game = temp
+        game = temp;
     }
     catch (e) {
-        console.log(e)
-        alert("An error occurred.")
+        console.log(e);
+        alert("An error occurred.");
     }
     finally {
-        updateAccelerators()
-        updateAcceleratorBoosts()
-        updateTachyonUpgrades()
-        updateAutomationToggleLabels()
-        document.getElementById("autoSaveButton").innerHTML = "Auto Save: " + (game.settings.autoSave ? "ON" : "OFF")
+        updateAccelerators();
+        updateAcceleratorBoosts();
+        updateTachyonUpgrades();
+        updateAutomationToggleLabels();
+        document.getElementById("autoSaveButton").innerHTML = "Auto Save: " + (game.settings.autoSave ? "ON" : "OFF");
     }
 }
 
 (() => {
     if (window.localStorage.getItem("IA_SAVE") != null)
-        import_save(window.localStorage.getItem("IA_SAVE"))
+        import_save(window.localStorage.getItem("IA_SAVE"));
 })()
 
 function save() {
-    window.localStorage.setItem("IA_SAVE", export_save())
+    window.localStorage.setItem("IA_SAVE", export_save());
 }
 
 function saveTick() {
     if (game.settings.autoSave)
-        save()
+        save();
 }
 
-window.setInterval(saveTick, 30000)
+window.setInterval(saveTick, 30000);
