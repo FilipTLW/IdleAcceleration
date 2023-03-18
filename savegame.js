@@ -106,7 +106,14 @@ const BASE_GAME = {
             autoAccel: false,
             autoAccelBoost: false
         },
-        breakTimeUnlocked: false
+        breakTime: {
+            antiHiggsBosons: new Decimal(0),
+            ECUnlocked: false,
+            ECBoughtUpgrades: []
+        }
+    },
+    settings: {
+        autoSave: true
     }
 }
 
@@ -122,6 +129,9 @@ function onclick_import() {
     import_save(prompt("Save Code"))
 }
 
+function onclick_save() {
+    save()
+}
 
 function import_save(obj) {
     try {
@@ -153,6 +163,7 @@ function import_save(obj) {
         temp.accelerators.accel10.amount = new Decimal(temp.accelerators.accel10.amount)
         temp.accelerators.accel10.cost = new Decimal(temp.accelerators.accel10.cost)
         temp.timeTravel.tachyons = new Decimal(temp.timeTravel.tachyons)
+        temp.timeTravel.breakTime.antiHiggsBosons = new Decimal(temp.timeTravel.breakTime.antiHiggsBosons)
 
         game = temp
     }
@@ -165,5 +176,22 @@ function import_save(obj) {
         updateAcceleratorBoosts()
         updateTachyonUpgrades()
         updateAutomationToggleLabels()
+        document.getElementById("autoSaveButton").innerHTML = "Auto Save: " + (game.settings.autoSave ? "ON" : "OFF")
     }
 }
+
+(() => {
+    if (window.localStorage.getItem("IA_SAVE") != null)
+        import_save(window.localStorage.getItem("IA_SAVE"))
+})()
+
+function save() {
+    window.localStorage.setItem("IA_SAVE", export_save())
+}
+
+function saveTick() {
+    if (game.settings.autoSave)
+        save()
+}
+
+window.setInterval(saveTick, 30000)

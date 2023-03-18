@@ -1288,7 +1288,7 @@
     Decimal.prototype.log = function (base) {
       // UN-SAFETY: Most incremental game cases are log(number := 1 or greater, base := 2 or greater).
       // We assume this to be true and thus only need to return a number, not a Decimal,
-      return Math.LN10 / Math.log(base) * this.log10();
+      return new Decimal(Math.LN10 / Math.log(base) * this.log10());
     };
 
     Decimal.prototype.log2 = function () {

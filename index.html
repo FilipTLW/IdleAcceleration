@@ -13,6 +13,9 @@
                 <p id="speed">Your speed is <span id="speedValue">0</span> <span id="speedUnit">yoctometers</span>/s.</p>
             </div>
             <div>
+                <p id="maxSpeed">Current speed cap: <span id="maxSpeedValue"></span></p>
+            </div>
+            <div>
                 <p id="acceleration">Your acceleration is <span id="accelerationValue">0</span> <span id="accelerationUnit">yoctometers</span>/s².</p>
             </div>
             <div>
@@ -158,6 +161,12 @@
                             <td>
                                 <button class="settingsButton" onclick="onclick_import()">Import</button>
                             </td>
+                            <td>
+                                <button class="settingsButton" onclick="onclick_autosave()" id="autoSaveButton">Auto Save: ON</button>
+                            </td>
+                            <td>
+                                <button class="settingsButton" onclick="onclick_save()">Save</button>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -165,7 +174,7 @@
             <div id=statisticsTab hidden>
             </div>
             <div id="timeTravelTab" hidden>
-                <div id="titeTravelSubTabButtons">
+                <div id="timeTravelSubTabButtons">
                     <button class="subTabButton timeTravelSubTabButton" id="tachyonUpgradesTabButton" onclick="onclickTachyonUpgradesSubTab()">Tachyon Upgrades</button>
                     <button class="subTabButton timeTravelSubTabButton" id="automationTabButton" onclick="onclickAutomationSubTab()" hidden>Automation</button>
                     <button class="subTabButton timeTravelSubTabButton" id="timeBreakTabButton" onclick="onclickBreakTimeSubTab()" hidden>Time Break</button>
@@ -227,74 +236,106 @@
                     </div>
                 </div>
                 <div id="breakTimeSubTab" hidden>
-                    <h1 id="einsteinCompensatorTitle">Einstein Compensator</h1>
-                    <div id="einsteinCompensatorTree">
-                        <table class="einsteinCompensatorTreeRow">
-                            <tr>
-                                <td>
-                                    <button class="tachyonUpgradeLocked einsteinCompensatorMainUpgrade">
-                                        <p style="font-size: 14;">Unlock the Einstein Compensator</p>
-                                        <p style="font-size: 14;">Cost: 50 Tachyons</p>
-                                    </button>
-                                </td>
-                            </tr>
-                        </table>
-                        <table class="einsteinCompensatorTreeRow">
-                            <tr>
-                                <td>
-                                    <button class="tachyonUpgradeLocked">
-                                        <p style="font-size: 14;">Unlock the Einstein Compensator</p>
-                                        <p style="font-size: 14;">Cost: 50 Tachyons</p>
-                                    </button>
-                                    <button class="tachyonUpgradeLocked">
-                                        <p style="font-size: 14;">Unlock the Einstein Compensator</p>
-                                        <p style="font-size: 14;">Cost: 50 Tachyons</p>
-                                    </button>
-                                </td>
-                            </tr>
-                        </table>
-                        <table class="einsteinCompensatorTreeRow">
-                            <tr>
-                                <td>
-                                    <button class="tachyonUpgradeLocked">
-                                        <p style="font-size: 14;">Unlock the Einstein Compensator</p>
-                                        <p style="font-size: 14;">Cost: 50 Tachyons</p>
-                                    </button>
-                                    <button class="tachyonUpgradeLocked">
-                                        <p style="font-size: 14;">Unlock the Einstein Compensator</p>
-                                        <p style="font-size: 14;">Cost: 50 Tachyons</p>
-                                    </button>
-                                </td>
-                            </tr>
-                        </table>
-                        <table class="einsteinCompensatorTreeRow">
-                            <tr>
-                                <td>
-                                    <button class="tachyonUpgradeLocked">
-                                        <p style="font-size: 14;">Unlock the Einstein Compensator</p>
-                                        <p style="font-size: 14;">Cost: 50 Tachyons</p>
-                                    </button>
-                                    <button class="tachyonUpgradeLocked">
-                                        <p style="font-size: 14;">Unlock the Einstein Compensator</p>
-                                        <p style="font-size: 14;">Cost: 50 Tachyons</p>
-                                    </button>
-                                    <button class="tachyonUpgradeLocked">
-                                        <p style="font-size: 14;">Unlock the Einstein Compensator</p>
-                                        <p style="font-size: 14;">Cost: 50 Tachyons</p>
-                                    </button>
-                                </td>
-                            </tr>
-                        </table>
-                        <table class="einsteinCompensatorTreeRow">
-                            <tr>
-                                <td>
-                                    <button class="tachyonUpgradeLocked einsteinCompensatorMainUpgrade">
-                                        <p style="font-size: 14;">Unlock Grades of Light</p>
-                                        <p style="font-size: 14;">Cost: 50 Tachyons</p>
-                                    </button>
-                                </td>
-                            </tr>
-                        </table>
+                    <div id="timeBreakSubSubTabButtons">
+                        <button class="subTabButton timeTravelSubTabButton" id="einsteinCompensatorTabButton" onclick="onclickEinsteinCompensatorSubSubTab()">Einstein Compensator</button>
+                        <button class="subTabButton timeTravelSubTabButton" id="gradesOfLightTabButton" onclick="onclickGradesOfLightSubSubTab()">Grades of Light </button>
+                    </div>
+                    <div id="einsteinCompensatorSubSubTab">
+                        <div id="einsteinCompensatorTree">
+                            <table class="einsteinCompensatorTreeRow">
+                                <tr>
+                                    <td>
+                                        <button class="einsteinCompensatorUpgradeLocked einsteinCompensatorMainUpgrade">
+                                            <p style="font-size: 14;">Unlock the Einstein Compensator</p>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="einsteinCompensatorTreeRow">
+                                <tr>
+                                    <td>
+                                        <button class="einsteinCompensatorUpgradeLocked">
+                                            <p style="font-size: 14;">Increase the speed cap to c^5.</p>
+                                            <p style="font-size: 14;">(2.42e114 yottameters)</p>
+                                            <p style="font-size: 14;">Cost: 1 AHP</p>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="einsteinCompensatorTreeRow">
+                                <tr>
+                                    <td>
+                                        <button class="einsteinCompensatorUpgradeLocked">
+                                            <p style="font-size: 14;">ECU21</p>
+                                            <p style="font-size: 14;">Cost: ??? [WIP]</p>
+                                        </button>
+                                        <button class="einsteinCompensatorUpgradeLocked">
+                                            <p style="font-size: 14;">ECU22</p>
+                                            <p style="font-size: 14;">Cost: ??? [WIP]</p>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="einsteinCompensatorTreeRow">
+                                <tr>
+                                    <td>
+                                        <button class="einsteinCompensatorUpgradeLocked">
+                                            <p style="font-size: 14;">ECU31</p>
+                                            <p style="font-size: 14;">Cost: ??? [WIP]</p>
+                                        </button>
+                                        <button class="einsteinCompensatorUpgradeLocked">
+                                            <p style="font-size: 14;">ECU32</p>
+                                            <p style="font-size: 14;">Cost: ??? [WIP]</p>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="einsteinCompensatorTreeRow">
+                                <tr>
+                                    <td>
+                                        <button class="einsteinCompensatorUpgradeLocked">
+                                            <p style="font-size: 14;">ECU41</p>
+                                            <p style="font-size: 14;">Cost: ??? [WIP]</p>
+                                        </button>
+                                        <button class="einsteinCompensatorUpgradeLocked">
+                                            <p style="font-size: 14;">ECU42</p>
+                                            <p style="font-size: 14;">Cost: ??? [WIP]</p>
+                                        </button>
+                                        <button class="einsteinCompensatorUpgradeLocked">
+                                            <p style="font-size: 14;">ECU43</p>
+                                            <p style="font-size: 14;">Cost: ??? [WIP]</p>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="einsteinCompensatorTreeRow">
+                                <tr>
+                                    <td>
+                                        <button class="einsteinCompensatorUpgradeLocked einsteinCompensatorMainUpgrade">
+                                            <p style="font-size: 14;">Unlock Grades of Light</p>
+                                            <p style="font-size: 14;">Cost: ??? [WIP]</p>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="einsteinCompensatorFooterSpacing"></div>
+                        <div id="einsteinCompensatorFooter">
+                            <table id="einsteinCompensatorFooterTable">
+                                <tr>
+                                    <td colspan="3">0 Anti Higgs Particles</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2">Gain 1 AHP on:</td>
+                                    <td>[WIP]</td>
+                                    <td>[WIP]</td>
+                                </tr>
+                                <tr>
+                                    <td>[WIP]</td>
+                                    <td>[WIP]</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

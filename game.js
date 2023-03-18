@@ -52,7 +52,14 @@ var game = {
             autoAccel: false,
             autoAccelBoost: false
         },
-        breakTimeUnlocked: false
+        breakTime: {
+            antiHiggsBosons: new Decimal(0),
+            ECUnlocked: false,
+            ECBoughtUpgrades: []
+        }
+    },
+    settings: {
+        autoSave: true
     }
 }
 
@@ -71,14 +78,19 @@ const TACHYON_UPGRADE_COSTS = [
 
 const TACHYON_UPGRADES = ["00", "01", "02", "03", "10"]
 
+function onclick_autosave() {
+    game.settings.autoSave = !game.settings.autoSave
+    document.getElementById("autoSaveButton").innerHTML = "Auto Save: " + (game.settings.autoSave ? "ON" : "OFF")
+}
+
 updateAccelerators()
 
 var lastUpdate = Date.now();
 var tickInterval = setInterval(tick, 0);
 
 function tick() {
-    var now = Date.now();
-    var dt = now - lastUpdate;
+    let now = Date.now();
+    let dt = now - lastUpdate;
     dt /= 1000
     lastUpdate = now;
 
@@ -86,10 +98,10 @@ function tick() {
 }
 
 function update(dt) {
-    var speed = formatSI(game.speed)
+    let speed = formatSI(game.speed)
     document.getElementById("speedValue").innerText = speed.val
     document.getElementById("speedUnit").innerText = speed.unit
-    var acceleration = formatSI(game.acceleration)
+    let acceleration = formatSI(game.acceleration)
     document.getElementById("accelerationValue").innerText = acceleration.val
     document.getElementById("accelerationUnit").innerText = acceleration.unit
 
@@ -98,7 +110,7 @@ function update(dt) {
     game.speed = game.speed.add(game.acceleration.mul(dt))
     game.acceleration = calcAcceleration()
 
-    var progress = game.speed.log(LIGHT_SPEED) * 100
+    let progress = game.speed.log(LIGHT_SPEED) * 100
     if (progress < 0) {
         progress = 0
     }
@@ -109,10 +121,8 @@ function update(dt) {
 
     if (game.speed.gte(LIGHT_SPEED)) {
         game.timeTravel.unlocked = true
-        if (!game.timeTravel.breakTimeUnlocked) {
-            document.getElementById("everything").hidden = true
-            document.getElementById("timeTravelForcedScreen").hidden = false
-        }
+        document.getElementById("everything").hidden = true
+        document.getElementById("timeTravelForcedScreen").hidden = false
     }
 }
 
@@ -121,6 +131,7 @@ function updateUnlockedStuff() {
     document.getElementById("automationTabButton").hidden = !game.timeTravel.tachyonUpgradesUnlocked.includes("03")
     document.getElementById("timeBreakTabButton").hidden = !game.timeTravel.tachyonUpgradesUnlocked.includes("10")
     document.getElementById("tachyons").hidden = !game.timeTravel.unlocked
+    document.getElementById("maxSpeed").hidden = !game.timeTravel.tachyonUpgradesUnlocked.includes("10")
     document.getElementById("acceleratorBoost00val").textContent = game.timeTravel.tachyonUpgradesUnlocked.includes("01") ? "2.1" : "2"
 }
 
@@ -334,10 +345,8 @@ function timeTravel() {
 function calcTachyonGain() {
     if (game.speed.lt(LIGHT_SPEED)) {
         return 0;
-    } else if (!game.timeTravel.breakTimeUnlocked) {
-        return 1;
     } else {
-        return new Decimal(2).pow(game.speed.div(LIGHT_SPEED).log(100)).floor()
+        return new Decimal("10").pow(game.speed.log(LIGHT_SPEED).mul(new Decimal("0.2"))).floor()
     }
 }
 
@@ -376,7 +385,7 @@ function autoAcceleratorTick() {
 var autoAcceleratorBoostInterval = window.setInterval(autoAcceleratorBoostTick, 200)
 
 function autoAcceleratorBoostTick() {
-    if (game.timeTravel.tachyonUpgradesUnlocked.includes("03") && game.timeTravel.automation.autoAccel) {
+    if (game.timeTravel.tachyonUpgradesUnlocked.includes("03") && game.timeTravel.automation.autoAccelBoost) {
         onclickAcceleratorBoosts(0, 0)
         onclickAcceleratorBoosts(0, 1)
     }
